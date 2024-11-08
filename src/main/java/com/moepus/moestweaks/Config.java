@@ -20,5 +20,5 @@ public class Config {
     public boolean doubleJump = false;
     public boolean adrenalineEffect = false;
     public boolean noRecipeBook = false;
-    public boolean itemEntityRenderOptimization = false;
+    public boolean itemEntityRenderOptimization = true;
 }

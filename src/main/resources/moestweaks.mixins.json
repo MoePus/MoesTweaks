@@ -8,6 +8,8 @@
   "client": [
     "LocalPlayerMixinDoubleJmp",
     "itemEntityOptimization.ItemEntityRenderMixin",
+    "itemEntityOptimization.ItemRendererMixin",
+    "itemEntityOptimization.ItemTransformMixin",
     "noRecipeBook.AbstractFurnaceScreenMixin",
     "noRecipeBook.ClientPacketListenerMixin",
     "noRecipeBook.InventoryScreenMixin"
