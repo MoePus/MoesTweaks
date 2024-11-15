@@ -10,6 +10,7 @@
     "itemEntityOptimization.ItemEntityRenderMixin",
     "itemEntityOptimization.ItemRendererMixin",
     "itemEntityOptimization.ItemTransformMixin",
+    "modelPartOptimization.CubeMixin",
     "noRecipeBook.AbstractFurnaceScreenMixin",
     "noRecipeBook.ClientPacketListenerMixin",
     "noRecipeBook.InventoryScreenMixin"
@@ -26,7 +27,8 @@
     "noRecipeBook.AbstractFurnaceScreenMixin",
     "noRecipeBook.CraftingScreenMixin",
     "noRecipeBook.InventoryScreenMixin",
-    "noRecipeBook.ServerRecipeBookMixin"
+    "noRecipeBook.ServerRecipeBookMixin",
+    "skipClientCollide.EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

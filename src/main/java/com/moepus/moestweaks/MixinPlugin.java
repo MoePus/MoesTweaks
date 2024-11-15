@@ -39,6 +39,8 @@ public class MixinPlugin implements IMixinConfigPlugin {
             case "com.moepus.moestweaks.mixins.noRecipeBook.ClientPacketListenerMixin", "com.moepus.moestweaks.mixins.noRecipeBook.ServerRecipeBookMixin", "com.moepus.moestweaks.mixins.noRecipeBook.AbstractFurnaceScreenMixin", "com.moepus.moestweaks.mixins.noRecipeBook.CraftingScreenMixin", "com.moepus.moestweaks.mixins.noRecipeBook.InventoryScreenMixin" ->
                     config.noRecipeBook;
             case "com.moepus.moestweaks.mixins.itemEntityOptimization.ItemRendererMixin", "com.moepus.moestweaks.mixins.itemEntityOptimization.ItemEntityRenderMixin", "com.moepus.moestweaks.mixins.itemEntityOptimization.ItemTransformMixin" -> config.itemEntityRenderOptimization;
+            case "com.moepus.moestweaks.mixins.modelPartOptimization.CubeMixin" -> config.modelPartOptimization;
+            case "com.moepus.moestweaks.mixins.skipClientCollide.EntityMixin" -> config.skipClientCollide;
             default -> true;
         };
     }

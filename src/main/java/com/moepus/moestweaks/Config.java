@@ -20,5 +20,7 @@ public class Config {
     public boolean doubleJump = false;
     public boolean adrenalineEffect = false;
     public boolean noRecipeBook = false;
-    public boolean itemEntityRenderOptimization = true;
+    public boolean itemEntityRenderOptimization = false;
+    public boolean modelPartOptimization = false;
+    public boolean skipClientCollide = false;
 }

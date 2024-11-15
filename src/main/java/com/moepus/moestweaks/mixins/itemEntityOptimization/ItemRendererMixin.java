@@ -2,7 +2,6 @@ package com.moepus.moestweaks.mixins.itemEntityOptimization;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -11,8 +10,6 @@ import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -28,9 +25,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
-
-import static java.lang.Math.abs;
-import static java.lang.Math.signum;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
@@ -50,7 +44,7 @@ public abstract class ItemRendererMixin {
         try (MemoryStack memorystack = MemoryStack.stackPush()) {
             ByteBuffer bytebuffer = memorystack.malloc(32); // hardcode DefaultVertexFormat.BLOCK.getVertexSize()
             IntBuffer intbuffer = bytebuffer.asIntBuffer();
-            Vector4f position = new Vector4f();
+            Vector3f position = new Vector3f();
             final float scaled_r = r / 255.0F;
             final float scaled_g = g / 255.0F;
             final float scaled_b = b / 255.0F;
@@ -69,24 +63,29 @@ public abstract class ItemRendererMixin {
                 float u = bytebuffer.getFloat(16);
                 float v = bytebuffer.getFloat(20);
                 vertexConsumer.applyBakedNormals(transferred_normal, bytebuffer, pose.normal());
-                position.set(bytebuffer.getFloat(0), bytebuffer.getFloat(4), bytebuffer.getFloat(8), 1.0F).mul(pose_matrix);
+                position.set(bytebuffer.getFloat(0), bytebuffer.getFloat(4), bytebuffer.getFloat(8)).mulPosition(pose_matrix);
                 vertexConsumer.vertex(position.x(), position.y(), position.z(), vertex_r, vertex_g, vertex_b, vertex_a, u, v, packedOverlay, l, transferred_normal.x(), transferred_normal.y(), transferred_normal.z());
             }
         }
     }
 
     @Unique
-    public void moesTweaks$renderQuadList(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<BakedQuad> bakedQuads, ItemStack itemStack, int packedLight, int packedOverlay) {
+    public void moesTweaks$renderQuadList(PoseStack.Pose pose, Vector3f view, VertexConsumer vertexConsumer, List<BakedQuad> bakedQuads, ItemStack itemStack, int packedLight, int packedOverlay) {
         boolean isNotEmpty = !itemStack.isEmpty();
 
         int lastTintIndex = -1;
         float lastr = 1.0F, lastg = 1.0F, lastb = 1.0F;
         Vector3f normal = new Vector3f();
-
         for (BakedQuad bakedquad : bakedQuads) {
-            Vec3i face_normal = bakedquad.getDirection().getNormal();
-            normal.set((float) face_normal.getX(), (float) face_normal.getY(), (float) face_normal.getZ());
-            normal.mul(pose.normal()).normalize();
+            if (view.z < 0) {
+                Vec3i face_normal = bakedquad.getDirection().getNormal();
+                normal.set((float) face_normal.getX(), (float) face_normal.getY(), (float) face_normal.getZ());
+                // function storage translates pose but not normal. so...
+                normal.mulDirection(pose.pose());
+                if (normal.dot(view) > 0.1F) {
+                    continue;
+                }
+            }
 
             final int tintIndex = bakedquad.getTintIndex();
             if (isNotEmpty && tintIndex != -1) {
@@ -111,10 +110,12 @@ public abstract class ItemRendererMixin {
     public void renderModelLists(BakedModel model, ItemStack itemStack, int packedLight, int packedOverlay, PoseStack poseStack, VertexConsumer vertexConsumer, CallbackInfo ci) {
         if (model.getClass() == SimpleBakedModel.class) {
             PoseStack.Pose pose = poseStack.last();
+            Matrix4f _pose = pose.pose();
+            Vector3f view = new Vector3f(_pose.m30(), _pose.m31(), _pose.m32()).normalize();
             for (Direction direction : Direction.values()) {
-                this.moesTweaks$renderQuadList(pose, vertexConsumer, model.getQuads((BlockState) null, direction, null), itemStack, packedLight, packedOverlay);
+                this.moesTweaks$renderQuadList(pose, view, vertexConsumer, model.getQuads(null, direction, null), itemStack, packedLight, packedOverlay);
             }
-            this.moesTweaks$renderQuadList(pose, vertexConsumer, model.getQuads((BlockState) null, (Direction) null, null), itemStack, packedLight, packedOverlay);
+            this.moesTweaks$renderQuadList(pose, view, vertexConsumer, model.getQuads(null, null, null), itemStack, packedLight, packedOverlay);
             ci.cancel();
         }
     }
