@@ -68,6 +68,12 @@ public class MoesTweaks {
             forgeEventBus.addListener(EventPriority.LOWEST, AdrenalineEffectGiver::onLivingHurt);
         }
 
+        if(config.damagedMonsterArmor)
+            forgeEventBus.addListener(EventPriority.LOWEST, DamagedMonsterArmor::onMobFinalizeSpawn);
+
+        if(config.monsterWearsArmor)
+            forgeEventBus.addListener(MonsterWearsArmor::onMobFinalizeSpawn);
+
         modEventBus.addListener(this::commonSetup);
     }
 

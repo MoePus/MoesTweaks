@@ -1,4 +1,4 @@
-package com.moepus.moestweaks.mixins;
+package com.moepus.moestweaks.mixins.mobThrowsMustDrop;
 
 
 import net.minecraft.world.entity.EntityType;

@@ -7,10 +7,6 @@
   "plugin": "com.moepus.moestweaks.MixinPlugin",
   "client": [
     "LocalPlayerMixinDoubleJmp",
-    "itemEntityOptimization.ItemEntityRenderMixin",
-    "itemEntityOptimization.ItemRendererMixin",
-    "itemEntityOptimization.ItemTransformMixin",
-    "modelPartOptimization.CubeMixin",
     "noRecipeBook.AbstractFurnaceScreenMixin",
     "noRecipeBook.ClientPacketListenerMixin",
     "noRecipeBook.InventoryScreenMixin"
@@ -19,16 +15,17 @@
     "AbstractPiglinMixin",
     "FireBlockMixin",
     "HoglinMixin",
-    "MobMixin",
     "PlayerMixinBetterKeep",
     "ServerPlayerMixinBetterKeep",
     "ServerPlayerMixinDoubleJmp",
     "SlimeMixin",
+    "VillagerMakeLoveMixin",
+    "mobThrowsMustDrop.MobMixin",
+    "monsterArmorHurt.MonsterMixin",
     "noRecipeBook.AbstractFurnaceScreenMixin",
     "noRecipeBook.CraftingScreenMixin",
     "noRecipeBook.InventoryScreenMixin",
-    "noRecipeBook.ServerRecipeBookMixin",
-    "skipClientCollide.EntityMixin"
+    "noRecipeBook.ServerRecipeBookMixin"
   ],
   "injectors": {
     "defaultRequire": 1
