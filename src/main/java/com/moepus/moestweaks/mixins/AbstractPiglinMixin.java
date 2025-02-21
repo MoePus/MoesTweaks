@@ -106,12 +106,12 @@ public abstract class AbstractPiglinMixin extends Mob {
                         ItemStack item = new ItemStack(Items.NETHERITE_AXE);
                         item.setDamageValue(item.getMaxDamage() - random.nextInt(100, 200));
                         setItemSlot(EquipmentSlot.MAINHAND, item);
-                        setDropChance(EquipmentSlot.FEET, 0.0f);
+                        setDropChance(EquipmentSlot.MAINHAND, 0.0f);
                     } else if (getItemBySlot(EquipmentSlot.MAINHAND).is(Items.GOLDEN_SWORD)) {
                         ItemStack item = new ItemStack(Items.NETHERITE_SWORD);
                         item.setDamageValue(item.getMaxDamage() - random.nextInt(100, 200));
                         setItemSlot(EquipmentSlot.MAINHAND, item);
-                        setDropChance(EquipmentSlot.FEET, 0.0f);
+                        setDropChance(EquipmentSlot.MAINHAND, 0.0f);
                     }
                 }
             }
